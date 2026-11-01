@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2024 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ class PluginTest {
     }
   }
 
-  static class SchemaHolder {
+  static final class SchemaHolder {
     private static ThreadLocal<String> value = ThreadLocal.withInitial(() -> "PUBLIC");
 
     public static void set(String tenantName) {
@@ -69,6 +69,9 @@ class PluginTest {
 
     public static String get() {
       return value.get();
+    }
+
+    private SchemaHolder() {
     }
   }
 
@@ -89,13 +92,13 @@ class PluginTest {
     map = (Map<?, ?>) new AlwaysMapPlugin().plugin(map);
     try {
       map.get("Anything");
-      fail("Exected IllegalArgumentException, but no exception was thrown.");
+      fail("Expected IllegalArgumentException, but no exception was thrown.");
     } catch (IllegalArgumentException e) {
       assertEquals(
           "Method 'public abstract java.lang.Object java.util.Map.get(java.lang.Object)' is not supported as a plugin target.",
           e.getMessage());
     } catch (Exception e) {
-      fail("Exected IllegalArgumentException, but was " + e.getClass(), e);
+      fail("Expected IllegalArgumentException, but was " + e.getClass(), e);
     }
   }
 
